@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico"/>
+    <title>Spring boot </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+	<div class="col-md-12">
+	<h2>Upload Files</h2>
+	<div class="alert alert-success" th:if="${successmessage}">
+	  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	  <strong th:text="${successmessage}"></strong>
+	</div>
+	<div class="alert alert-warning" th:if="${errormessage}">
+	  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+	  <strong th:text="${errormessage}"></strong>
+	</div>
+	 <form action="#" th:action="@{'/fileupload'}" th:object="${user}" method="post" enctype="multipart/form-data">
+	 <div class="form-group">
+	 	<label for="file">Upload File (pdf or csv or json or xls or xlsx)</label>
+	    <input type="file" class="form-control" id="file" placeholder="Upload File" th:field="*{file}">
+	  </div>
+	  <button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+	 
+<hr/>
+	</div>
+	<div class="col-md-12">
+	<h2>All Users</h2>
+	<div style="margin-top:20px;">
+	<table id="example" class="table table-striped table-bordered" style="width:100%;">
+    <thead>
+      <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Email</th>
+        <th>Phone Number</th>
+        <th>File Type</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="user: ${users}">
+        <td th:text="${user.firstName}">John</td>
+        <td th:text="${user.lastName}">Doe</td>
+        <td th:text="${user.email}">john@example.com</td>
+        <td th:text="${user.phoneNumber}">9123456780</td>
+        <td th:text="${user.fileType}">9123456780</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+	</div>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+<script>
+$(function(){
+	$('#example').DataTable();
+	$('.confirm-delete').on('click', function(e) {
+    e.preventDefault();
+    var id = $(this).data('id');
+    var name = $(this).data('name');
+    $("#modal-id").html(id);
+    $("#modal-name").html(name);
+    console.log(id+" "+name);
+    $('#idModalLink').attr("href", "/deleteuser/" + id);
+    $('#myModal').data('id', id).modal('show');
+});
+	
+	$('#emailsender').on('click', function(e) {
+	    e.preventDefault();
+	});
+
+	
+})
+</script>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body" id="myModalBody">
+            	<p>Do you want to delete this (<span id="modal-name"></span>) record?</p>
+            </div>
+            <div class="modal-footer">
+            	<a id="idModalLink" href="#" class="btn btn-primary">Yes</a>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+</body>
+</html>
